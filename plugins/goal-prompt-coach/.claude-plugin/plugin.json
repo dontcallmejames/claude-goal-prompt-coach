@@ -1,0 +1,12 @@
+{
+  "name": "goal-prompt-coach",
+  "description": "Turns a vague idea into a strong, ready-to-paste Claude /goal prompt with an evaluable success condition. Ask-then-deliver coaching.",
+  "version": "1.0.0",
+  "author": {
+    "name": "dontcallmejames"
+  },
+  "homepage": "https://github.com/dontcallmejames/claude-goal-prompt-coach",
+  "repository": "https://github.com/dontcallmejames/claude-goal-prompt-coach",
+  "license": "MIT",
+  "keywords": ["goal", "prompt", "coach", "autonomous", "prompt-engineering"]
+}
