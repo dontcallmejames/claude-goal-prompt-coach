@@ -13,9 +13,9 @@ Run the Goal Prompt Coach procedure. Read and follow it exactly:
 
 `${CLAUDE_PLUGIN_ROOT}/skills/goal-prompt-coach/SKILL.md`
 
-That file also points you to the two knowledge-base references
-(`references/goal-loop.md`, `references/claude-prompting.md`) — read them before
-coaching.
+That file also points you to the knowledge-base references
+(`references/goal-loop.md`, `references/claude-prompting.md`,
+`references/fable-5.md`) — read them before coaching.
 
 Key reminders:
 - This is **ask, then deliver**. First surface assumptions and ask 3–6 targeted

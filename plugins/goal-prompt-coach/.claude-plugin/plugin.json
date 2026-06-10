@@ -1,7 +1,7 @@
 {
   "name": "goal-prompt-coach",
   "description": "Turns a vague idea into a strong, ready-to-paste Claude /goal prompt with an evaluable success condition. Ask-then-deliver coaching.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": {
     "name": "dontcallmejames"
   },

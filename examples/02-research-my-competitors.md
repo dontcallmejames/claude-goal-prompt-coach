@@ -76,3 +76,64 @@ Paste it into a new `/goal`.
 Note the conversion: "deep dive on competitors" (never-ending) became **"a
 competitors.md with N named competitors × fixed dimensions, every claim
 sourced, spot-check passes"** — a condition that can actually be reached.
+
+## v1.1.0 — updated coach, live run (before/after)
+
+Same idea and answers fed to the v1.1.0 coach (live, via
+`claude --plugin-dir`). The emitted prompt (1,874 chars) kept all five
+sections:
+
+```text
+/goal Produce a competitor analysis markdown report on Linear, Jira, and Height to inform product positioning.
+
+## Goal
+A file `competitor-analysis.md` comparing Linear, Jira, and Height across
+pricing, core features, target user profile, one standout strength, and one
+standout weakness per competitor — plus a Positioning Implications section
+drawing at least 3 differentiation observations.
+
+## Success condition (verify before stopping)
+Met ONLY when all are objectively true:
+1. `competitor-analysis.md` exists in the working directory.
+2. Each competitor section covers all five dimensions: pricing tiers/price
+   points, core feature set, target user profile, one standout strength,
+   one standout weakness.
+3. Every factual claim includes an inline source URL, or is explicitly
+   marked "unknown."
+4. A "Positioning Implications" section exists with at least 3 actionable
+   observations.
+5. No placeholder or "TBD" remains in the file.
+
+## Constraints
+- Fetch pricing and features from each product's official site; do not rely
+  solely on third-party summaries.
+- If a data point cannot be verified from a primary source, mark it
+  "unknown" — never extrapolate or assume.
+- Single markdown file output only.
+
+## Iteration policy
+- Fetch each competitor's pricing page and feature overview before drafting
+  that section; don't write from memory.
+- When you have enough information to act, act — don't re-survey sources
+  already read.
+- After drafting, scan the file to confirm every claim is cited or marked
+  "unknown" before finalizing.
+
+## Stop conditions
+- DONE: all five criteria confirmed by reading the file. Report the path and
+  list any "unknown" items so the user can follow up manually.
+- BLOCKED (stop + ask): pricing requires login and no public data exists; or
+  scope changes to add competitors. State the blocker and your recommended
+  option.
+```
+
+**Fable-traceable differences vs v1.0.0** (citations in fable-5.md):
+
+- **Anti-overplanning in iteration policy** (§5): "When you have enough
+  information to act, act — don't re-survey sources already read."
+- **Primary-source grounding with explicit unknowns flagged in the DONE
+  report** (§1): the agent must list its "unknown" items rather than papering
+  over gaps — the report carries its own evidence audit.
+- **BLOCKED reduced to input-only-the-user-can-give and scope change** (§6).
+- **Leaner phrasing throughout** (§3): no spot-check enumeration; one
+  verifiable citation rule does the work of v1.0.0's longer checklist.

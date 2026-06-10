@@ -3,6 +3,10 @@
 A vague idea with no evaluable target. Watch the coach force a measurable
 condition before it will emit a prompt.
 
+> **v1.1.0:** the section at the bottom shows the updated coach's live output
+> on this same idea and the Fable-5-traceable differences vs the v1.0.0 prompt
+> below. Citations: `skills/goal-prompt-coach/references/fable-5.md`.
+
 ## Input
 
 ```
@@ -77,3 +81,51 @@ the best number it got rather than silently fall short. Paste it into a new
 
 Note how "make my app faster" became **"LCP under 2.5s from 4.1s, verified by
 Lighthouse"** — a number the agent can measure, not a feeling.
+
+## v1.1.0 — updated coach, live run (before/after)
+
+Same idea and answers fed to the v1.1.0 coach (live, via
+`claude --plugin-dir`). The emitted prompt (2,171 chars) kept all five sections
+and tightened them with Fable-informed changes:
+
+```text
+/goal Reduce Largest Contentful Paint on the Next.js /dashboard route from ~4.1s to under 2.5s, verified by Lighthouse CLI, without changing the public API or swapping frameworks.
+
+## Goal
+Identify and fix the LCP bottleneck on `/dashboard` in this Next.js app. Produce working code changes that bring the measured LCP below 2.5s on a production build.
+
+## Success condition (verify before stopping)
+Met ONLY when all are objectively true:
+1. `next build && next start` succeeds with exit code 0 and no TypeScript or build errors.
+2. `npx lighthouse http://localhost:3000/dashboard --only-categories=performance --output=json` reports `largestContentfulPaint.numericValue` < 2500 (milliseconds).
+3. `git diff --name-only` shows no modified files under `pages/api/` or `app/api/` (public API surface unchanged).
+4. A smoke-test GET of `http://localhost:3000/dashboard` returns HTTP 200 and the page HTML contains expected content (a heading or primary data element present before the fix).
+
+## Constraints
+- Next.js only — no framework swap, no server runtime change.
+- Public API routes: no path, signature, or response shape changes.
+- Verify actual file and route structure before assuming component names or data-fetching patterns.
+- Prefer targeted fixes (image optimization, code splitting, data-fetching strategy, font/CSS load order) over broad rewrites.
+
+## Iteration policy
+- Profile first: use Lighthouse and Next.js bundle analysis to locate the bottleneck before writing code.
+- When you have a clear diagnosis, act — don't re-survey options you won't pursue.
+- Fix one cause at a time, rebuild, and re-run the Lighthouse check; partial improvement is not DONE.
+- Continue until condition 2 passes.
+
+## Stop conditions
+- DONE: all four conditions verified by actual tool runs. Report the before LCP (~4.1s), the after LCP value, the specific changes made, and the Lighthouse output that confirms it. If anything is unverified, say so explicitly.
+- BLOCKED (stop + ask): a fix requires changing a public API route; or the root cause requires scope beyond /dashboard; or a required env var or credential is absent. State the blocker and your recommended option.
+```
+
+**Fable-traceable differences vs v1.0.0** (citations in fable-5.md):
+
+- **DONE is evidence-grounded** (§1): "verified by actual tool runs... If
+  anything is unverified, say so explicitly" — v1.0.0 only asked for a report.
+- **Anti-overplanning line in iteration policy** (§5): "When you have a clear
+  diagnosis, act — don't re-survey options you won't pursue" — absent in
+  v1.0.0.
+- **BLOCKED narrowed to documented pause categories** (§6): scope change or
+  missing input only — v1.0.0's BLOCKED was looser.
+- **Tighter, command-bound checks without enumeration padding** (§3): exact
+  Lighthouse JSON field and `git diff` check instead of softer phrasing.

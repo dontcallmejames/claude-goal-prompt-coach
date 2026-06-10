@@ -64,8 +64,45 @@ Heuristics the coach uses to harden a condition:
   checkable** (a passing acceptance checklist, a golden-file diff, a rubric the
   agent scores against and reports).
 
+## Tuning for long-horizon models (Fable 5)
+
+Citations for everything in this section: [fable-5.md](fable-5.md). These are
+plain prompt instructions — additive, and safe on any current Claude model.
+
+- **Evidence-grounded DONE reports** (fable-5.md §1). Phrase the DONE stop
+  condition so the agent reports only claims it can tie to an actual tool
+  result from the run: "report only what you can point to evidence for; if
+  something is unverified, say so." Anthropic found this nearly eliminates
+  fabricated status reports on long runs.
+- **Verifier subagents in the iteration policy** (fable-5.md §2). For goals
+  that run long, fresh-context verifier subagents outperform self-critique.
+  Emit: "At [interval / each milestone], verify your work against the success
+  condition using a fresh-context subagent."
+- **Act once informed** (fable-5.md §5). Long-horizon models can overplan at
+  high effort. Add to the iteration policy: "When you have enough information
+  to act, act — don't re-derive established facts or survey options you won't
+  pursue."
+- **BLOCKED = exactly three things** (fable-5.md §6). Per documented guidance,
+  the agent should pause only for: a destructive/irreversible action, a real
+  scope change, or input only the user can provide. Write BLOCKED conditions
+  inside those categories — nothing else earns a stop.
+- **A notes file for multi-session goals** (fable-5.md §7). If the goal will
+  span sessions or hours/days of autonomy, add to the iteration policy: keep a
+  `progress.md` with state, lessons, and next steps, updated as work proceeds.
+- **Never request reasoning echo** (fable-5.md §4). Do not emit instructions
+  like "show your thinking" or "explain your reasoning in the response" — on
+  Fable 5 these can trigger the `reasoning_extraction` refusal. Ask for
+  observable artifacts instead: decisions made, evidence, before/after values.
+- **Brevity over enumeration** (fable-5.md §3). One well-aimed instruction
+  steers better than an exhaustive list, and over-prescription can degrade
+  output on Fable 5. Prefer the single sentence that states the principle to
+  ten bullets that enumerate its cases; skip "CRITICAL: you MUST" emphasis.
+
 ## Good fits for /goal
 
 Long-horizon, verifiable work: code-intensive builds (dashboards, backtests),
 research deep-dives with a defined deliverable, migrations, audits — anything
-where "done" can be stated as a condition the agent can check.
+where "done" can be stated as a condition the agent can check. Current
+long-horizon models complete autonomous runs lasting hours and multi-day
+goal-directed work (fable-5.md §8–9) — so don't shrink an idea to fit the
+model; state the real end-to-end goal and let the success condition bound it.

@@ -1,4 +1,7 @@
-# Proof run — coach executed end-to-end on a fresh idea
+# Proof run (v1.0.0) — coach executed end-to-end on a fresh idea
+
+> Historical v1.0.0 artifact. For the v1.1.0 live proof run, see
+> [04-jquery-to-react.md](04-jquery-to-react.md).
 
 This is a captured run of the coach following the documented procedure
 (`skills/goal-prompt-coach/SKILL.md`) on an idea not used elsewhere, to confirm

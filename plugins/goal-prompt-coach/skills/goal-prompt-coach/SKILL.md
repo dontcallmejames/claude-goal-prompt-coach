@@ -16,6 +16,8 @@ quality):
 
 - `${CLAUDE_PLUGIN_ROOT}/skills/goal-prompt-coach/references/goal-loop.md`
 - `${CLAUDE_PLUGIN_ROOT}/skills/goal-prompt-coach/references/claude-prompting.md`
+- `${CLAUDE_PLUGIN_ROOT}/skills/goal-prompt-coach/references/fable-5.md`
+  (long-horizon model guidance — every claim cited to Anthropic docs)
 
 ## The flow: ask, then deliver
 
@@ -37,6 +39,11 @@ Given the user's rough idea (in `$ARGUMENTS` or the conversation):
    - **Scope & constraints**: What's in, what's out, what must not be touched?
    - **Environment**: Stack, language, where it runs, existing code to respect.
    - **Stop conditions**: What should make the agent stop and ask vs. push on?
+   - **Scale**: If the idea has an obvious more ambitious end-to-end framing,
+     offer it as one question rather than silently shrinking the goal —
+     current long-horizon models handle multi-hour/multi-day autonomous runs
+     (see fable-5.md §8). Also ask whether the work will likely span sessions;
+     that decides whether the prompt gets a progress-notes file.
    Keep questions concrete and answerable. Offer a likely default for each so
    the user can reply "all defaults" and move on.
 
@@ -83,10 +90,24 @@ Once you have answers (or the user says "use your defaults"):
      blocker and your recommended option.
    ```
 
-4. **Keep it under 4000 characters.** The `/goal` command rejects conditions
+4. **Apply the long-horizon tuning** from goal-loop.md's "Tuning for
+   long-horizon models" section (each item cited in fable-5.md):
+   - Phrase DONE so the agent reports only evidence-backed claims — work it
+     can point to a tool result for, with unverified items flagged as such.
+   - Write BLOCKED inside the three documented categories only: destructive/
+     irreversible action, real scope change, or input only the user can give.
+   - For long-running goals, put fresh-context subagent verification and an
+     "act once informed, don't overplan" line in the Iteration policy; if the
+     work may span sessions, add a `progress.md` state/lessons file.
+   - Prefer one well-aimed instruction to an enumerated list; no "CRITICAL:
+     you MUST" emphasis — over-prescription degrades output on Fable 5.
+   - Never instruct the agent to echo or explain its internal reasoning in
+     the response (can trigger the `reasoning_extraction` refusal on
+     Fable 5); ask for observable artifacts instead.
+5. **Keep it under 4000 characters.** The `/goal` command rejects conditions
    longer than 4000 chars. If the draft is over, compress wording (never drop a
    section or a success criterion) and tell the user you trimmed for the limit.
-5. **Final handoff line.** After the code block, in one or two sentences: note
+6. **Final handoff line.** After the code block, in one or two sentences: note
    the single most likely BLOCKED trigger (usually "the agent should verify X
    rather than assume it"), and remind the user the prompt is ready to paste
    into a new `/goal`.

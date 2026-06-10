@@ -79,11 +79,24 @@ actually check.
 ## Worked examples
 
 - [Make my app faster](examples/01-make-my-app-faster.md) — a feeling becomes a
-  measured threshold.
+  measured threshold (with v1.0.0 → v1.1.0 before/after).
 - [Research my competitors](examples/02-research-my-competitors.md) — an
-  open-ended task becomes a verifiable deliverable.
-- [Proof run](examples/03-proof-run.md) — the coach executed end-to-end on a
-  fresh idea.
+  open-ended task becomes a verifiable deliverable (with before/after).
+- [Proof run](examples/03-proof-run.md) — v1.0.0 end-to-end run on a fresh idea.
+- [jQuery → React migration](examples/04-jquery-to-react.md) — v1.1.0 live run
+  on a multi-session idea, showing the long-horizon tuning in full.
+
+## What's new in 1.1.0 — tuned for Claude Fable 5
+
+The coach now applies Anthropic's documented
+[Fable 5 prompting guidance](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5),
+with every claim cited in
+[references/fable-5.md](plugins/goal-prompt-coach/skills/goal-prompt-coach/references/fable-5.md):
+evidence-grounded DONE reports, fresh-context verifier subagents for long runs,
+a `progress.md` state file for multi-session goals, BLOCKED limited to the
+three documented pause categories, no reasoning-echo instructions (avoids the
+`reasoning_extraction` refusal), and brevity over enumeration. All additive —
+the plugin still works on any current Claude model.
 
 ## How it works
 
